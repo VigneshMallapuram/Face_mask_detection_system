@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Face Mask Alert</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem auto; max-width: 900px; text-align: center; }
+    img { border: 2px solid #333; max-width: 100%; }
+    .error { background: #fee; color: #900; padding: 1rem; }
+    .alert { background: #c00; color: white; font-weight: bold; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Face Mask Detection</h1>
+  {% if startup_error %}
+    <div class="error">{{ startup_error }}</div>
+  {% else %}
+    <div id="alert" class="alert" hidden>Alert: a person without a mask was detected.</div>
+    <div id="stream-error" class="error" hidden>
+      The webcam feed could not be loaded. Close other camera applications,
+      check Windows camera permissions, and reload this page.
+    </div>
+    <img id="stream" src="{{ url_for('video_feed') }}" alt="Live webcam feed">
+    <p>Red boxes indicate faces without masks. The alert is rate-limited to avoid repeated notifications.</p>
+  {% endif %}
+  <script>
+    const stream = document.getElementById("stream");
+    const alertBox = document.getElementById("alert");
+    const streamError = document.getElementById("stream-error");
+    if (stream) {
+      stream.addEventListener("error", () => {
+        alertBox.hidden = true;
+        streamError.hidden = false;
+      });
+    }
+  </script>
+</body>
+</html>
