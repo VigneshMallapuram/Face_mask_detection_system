@@ -28,6 +28,9 @@ data/
   no_mask/
 ```
 
+Download training dataset from here:
+https://www.kaggle.com/datasets/shiekhburhan/face-mask-dataset
+
 Train and run:
 
 ```powershell
